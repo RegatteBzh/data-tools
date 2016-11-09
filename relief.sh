@@ -4,7 +4,7 @@
 # npm install -g topojson
 
 FOLDER=tmp
-DEST=build
+DEST=relief
 COAST_SERVER=http://naciscdn.org/naturalearth
 
 rm -rf $FOLDER
