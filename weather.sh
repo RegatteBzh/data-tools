@@ -43,6 +43,7 @@ for i in `seq 0 3 384`; do
         rm -f $FOLDER/${FILE}
     else
         ${WGRIB} $FOLDER/${FILE} -bin $FOLDER/${FILE}.bin
+        ${WGRIB} $FOLDER/${FILE} -csv $FOLDER/${FILE}.csv
     fi
 done
 
