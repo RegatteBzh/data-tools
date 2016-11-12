@@ -1,8 +1,8 @@
 # Recupération des données
 
-## build.sh
+## relief.sh
 
-Récupération des données côtières
+Récupération des données côtières et les lacs
 
 ## polaire.sh
 
@@ -15,12 +15,17 @@ Récupération des polaires pour imoca 60
 * 32 => spi léger
 * 64 => gennaker
 
+## tools.sh
+
+Téléchargement et compilation de wgrib2 (ftp://ftp.cpc.ncep.noaa.gov/wd51we/wgrib2/)
+voir aussi: http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/
+
 ## weather.sh
+
+Lancer ``./tools.sh`` au préalable
 
 Prédictions meteo (GFS). 
 * Modifier la variable YYYYMMDD pour spécifier la date de calcul
 * Modifier la variable FORECAST pour spécifier l'heure de prédiction (doit être un multiple de 3)
 
 Téléchargé depuis: http://nomads.ncep.noaa.gov/
-
-Des outils: http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/

@@ -1,10 +1,28 @@
 #!/bin/bash
 
-FOLDER=weather
-DEST=build
-
 YYYYMMDD=20161108
 #YYYYMMDD=<a date, for example: 20140101>
+
+FOLDER=weather
+WGRIB=./wgrib2
+DATE_REGEX="^[0-9]{8}$"
+
+if [[ $1 =~ $DATE_REGEX ]];
+then
+    echo "Date is OK."
+    YYYYMMDD=`echo $1`
+else
+    echo "Date $1 must be YYYYMMDD format."
+    exit 1
+fi
+
+if [ -f "$WGRIB" ]
+then
+	echo "$WGRIB found."
+else
+	echo "$WGRIB not found. Please launch './tools.sh' before"
+    exit 1
+fi
 
 #FORECAST=<3 digit hour forecast; must be a multiple of 3>
 
@@ -23,6 +41,8 @@ for i in `seq 0 3 384`; do
     if [ $minimumsize -ge $actualsize ]
     then
         rm -f $FOLDER/${FILE}
+    else
+        ${WGRIB} $FOLDER/${FILE} -bin $FOLDER/${FILE}.bin
     fi
 done
 
