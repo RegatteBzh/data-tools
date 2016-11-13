@@ -5,6 +5,7 @@ YYYYMMDD=20161108
 
 FOLDER=weather
 WGRIB=./wgrib2
+BINJSON=./bin2json
 DATE_REGEX="^[0-9]{8}$"
 
 if [[ $1 =~ $DATE_REGEX ]];
@@ -21,6 +22,14 @@ then
 	echo "$WGRIB found."
 else
 	echo "$WGRIB not found. Please launch './tools.sh' before"
+    exit 1
+fi
+
+if [ -f "$BINJSON" ]
+then
+	echo "$BINJSON found."
+else
+	echo "$BINJSON not found. Please launch './tools.sh' before"
     exit 1
 fi
 
@@ -44,6 +53,7 @@ for i in `seq 0 3 384`; do
     else
         ${WGRIB} $FOLDER/${FILE} -bin $FOLDER/${FILE}.bin
         ${WGRIB} $FOLDER/${FILE} -csv $FOLDER/${FILE}.csv
+        ${BINJSON} $FOLDER/${FILE}.bin >$FOLDER/${FILE}.json
     fi
 done
 

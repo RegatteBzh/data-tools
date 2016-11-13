@@ -5,3 +5,7 @@ relief
 polaire_*
 wgrib
 wgrib2
+bin2json-src/bin2json
+bin2json-src/*.o
+bin2json-src/*.json
+bin2json

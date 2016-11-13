@@ -18,6 +18,12 @@ make
 cp wgrib2/wgrib2 "${ORIG_FOLDER}/."
 cp README "${ORIG_FOLDER}/README.wgrib2"
 
+#bin2json
+cd "${ORIG_FOLDER}"
+cd bin2json-src
+make
+cp bin2json "${ORIG_FOLDER}/bin2json"
+
 # Clean folders
 cd "${ORIG_FOLDER}"
 rm -rf "${FOLDER}"
