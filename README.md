@@ -48,4 +48,10 @@ DIRECTION=57.29578*(arctangent(UGRD,VGRD))+180.
 SPEED=SQRT(UGRD x UGRD + VGRD x VGRD) 
 
 In essence, the UGRD is the North/South wind component (North is + & South is -) 
-and VGRD is the East/West wind component (East is + West is - [I think...]). 
+and VGRD is the East/West wind component (East is + West is - [I think...]).
+UGRD représente la composante du vent zonal en m/s
+VGRD représente la composante du vent méridien en m/s
+
+# Calcul vitesse
+
+http://www.csgnetwork.com/degreelenllavcalc.html
