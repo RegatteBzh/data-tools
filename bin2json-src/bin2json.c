@@ -7,17 +7,41 @@
 
 #include <stdio.h>
 #include <malloc.h>
+#include <stdint.h>
 
-#define DATA_COUNT 181*360
+/**
+ * @param count Number of samples
+ * @param fp    File
+ * @returns Buffer (array of floats)
+ */
+float* readBlock(uint32_t* count, FILE* fp) {
+    float* buffer;
+    uint32_t size;
+
+    // Get the size of the data segment
+    fread(&size, sizeof(uint32_t), 1, fp);
+
+    // Prepare buffer
+    buffer = (float*)malloc(size);
+    *count = size / sizeof(float);
+
+    // Read the buffer
+    fread(buffer, sizeof(float), *count, fp);
+
+    return buffer;
+}
 
 int main (int argc, char** argv) {
     FILE* fp;
     char* filename;
     float* UGRD;
     float* VGRD;
-    int i;
+    uint32_t i;
     int longitude;
     int latitude;
+    uint32_t countUgrd;
+    uint32_t countVgrd;
+    uint32_t count;
 
     // Check arguments
     if (argc < 2) {
@@ -33,23 +57,17 @@ int main (int argc, char** argv) {
         return 1;
     }
 
-    //Memory allocation
-    UGRD = (float*) malloc(DATA_COUNT * sizeof(float));
-    VGRD = (float*) malloc(DATA_COUNT * sizeof(float));
-
-    //Read data
-    fseek(fp, 4, SEEK_CUR);
-    fread(UGRD, sizeof(float), DATA_COUNT, fp);
-    fseek(fp, 8, SEEK_CUR);
-    fread(VGRD, sizeof(float), DATA_COUNT, fp);
+    UGRD = readBlock(&countVgrd, fp);
+    VGRD = readBlock(&countUgrd, fp);
+    count = (countVgrd > countUgrd) ? countUgrd : countVgrd;
 
     // Display JSON
     longitude = -0;
     latitude = -90;
     printf("[");
-    for(i=0; i<DATA_COUNT; i++) {
+    for(i=0; i<count; i++) {
         printf("{\"lon\":%d,\"lat\":%d,\"UGRD\":%f,\"VGRD\":%f}", longitude++, latitude, UGRD[i], VGRD[i]);
-        if (i < DATA_COUNT-1) {
+        if (i < count-1) {
             printf(",");
         }
         if (longitude>359) {
