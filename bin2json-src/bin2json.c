@@ -28,6 +28,9 @@ float* readBlock(uint32_t* count, FILE* fp) {
     // Read the buffer
     fread(buffer, sizeof(float), *count, fp);
 
+    //skip the size that is repeated here
+    fseek(fp, 4, SEEK_CUR);
+
     return buffer;
 }
 
