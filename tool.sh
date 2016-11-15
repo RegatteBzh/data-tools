@@ -24,6 +24,12 @@ cd bin2json-src
 make
 cp bin2json "${ORIG_FOLDER}/bin2json"
 
+#etopo
+cd "${ORIG_FOLDER}"
+cd etopo-src
+make
+cp etopo "${ORIG_FOLDER}/etopo"
+
 # Clean folders
 cd "${ORIG_FOLDER}"
 rm -rf "${FOLDER}"
