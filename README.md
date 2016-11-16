@@ -21,6 +21,8 @@ Téléchargement et compilation de wgrib2 (ftp://ftp.cpc.ncep.noaa.gov/wd51we/wg
 
 voir aussi: http://www.nco.ncep.noaa.gov/pmb/codes/GRIB2/
 
+Pour compiler etopo, il faut installer le packet libpng12-dev
+
 ## weather.sh
 
 Lancer ``./tools.sh`` au préalable

@@ -10,5 +10,6 @@ bin2json-src/*.o
 bin2json-src/*.json
 bin2json
 etopo-src/etopo
-etopo-src/etopo.o
+etopo-src/*.o
+etopo-src/*.png
 etopo

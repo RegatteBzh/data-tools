@@ -1,54 +1,20 @@
 /**
- * Tool to convert wind forecast (1deg) bin file to json
+ * Tool to read ETOPO data
  *
  * Cyrille Meichel <cmeichel@free.fr> 2016/11
  *
  **/
 
 #include <stdio.h>
-#include <malloc.h>
 #include <stdint.h>
-#include <stdlib.h>
+#include "etopo-lib.h"
 
-#define NCOLS         21601
-#define NROWS         10801
+int16_t* map;
 
-/**
- * @param count Number of samples
- * @param fp    File
- * @returns Buffer (array of floats)
- */
-int16_t* readBlock(FILE* fp) {
-
-    int16_t* buffer = (int16_t*)malloc(sizeof(int16_t) * NCOLS * NROWS);
-
-    // Read complete buffer
-    fread(buffer, sizeof(int16_t), NCOLS * NROWS, fp);
-
-    return buffer;
-}
-
-void getCoord(char* str, int* deg, int* minutes) {
-    float f = (float)atof(str);
-    *deg = (int)f;
-    *minutes = abs((int)((f - (float)*deg) * 100));
-}
-
-int modulo(int angle, int mod) {
-    while (angle<0) {
-        angle += mod;
-    }
-    return angle% mod;
-}
-
-int sign(float f) {
-    return f > 0 ? 1 : -1;
-}
 
 int main (int argc, char** argv) {
     FILE* fp;
     char* filename;
-    int16_t* map;
     int latD = 0;
     int latM = 0;
     int lonD = 0;
@@ -79,15 +45,16 @@ int main (int argc, char** argv) {
     if (argc>3) {
         getCoord(argv[2], &lonD, &lonM);
         getCoord(argv[3], &latD, &latM);
-        lonD = modulo((lonD), 360);
-        latD = modulo(latD, 180) - 180;
-        lon = (lonD - 180) * 60 + lonM * lonD * sign(lonD);
-        lat = (latD + 90) * 60 + latM * latD * sign(latD);
+
+        // Convert longitude and latitude in minutes
+        lon = toMinutes(lonD, lonM);
+        lat = toMinutes(latD, latM);
+        
         printf("Lon: %d°%d' (%d')\nLat: %d°%d' (%d')\n", lonD, lonM, lon, latD, latM, lat);
-        printf("Height: %d m\n", map[lat * NCOLS + lon]);
+        printf("Height: %d m\n", getAltitude(map, lon, lat));
     }
 
-    free(map);
+    deleteBlock(map);
 
     // End
     return 0;

@@ -26,7 +26,7 @@ curl "$COAST_SERVER/110m/physical/ne_110m_coastline.zip" -o t${FOLDER}mp/ne_110m
 
 echo "==== Unzipping ===="
 for zip in ${FOLDER}/*.zip; do
-	unzip -o -d "${FOLDER}" $zip
+	unzip -o -d "${DEST}" $zip
 done
 
 echo "==== ETOPO1 ===="
