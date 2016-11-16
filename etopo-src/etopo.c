@@ -34,6 +34,17 @@ void getCoord(char* str, int* deg, int* minutes) {
     *minutes = abs((int)((f - (float)*deg) * 100));
 }
 
+int modulo(int angle, int mod) {
+    while (angle<0) {
+        angle += mod;
+    }
+    return angle% mod;
+}
+
+int sign(float f) {
+    return f > 0 ? 1 : -1;
+}
+
 int main (int argc, char** argv) {
     FILE* fp;
     char* filename;
@@ -46,6 +57,7 @@ int main (int argc, char** argv) {
     int lat=0;
 
     printf("%s <filename_i2.bin> [lon lat]\n", argv[0]);
+    printf("\te.i. %s ../relief/etopo1_ice_g_i2.bin -100.05 12.20\n", argv[0]);
 
 
     // Check arguments
@@ -67,9 +79,12 @@ int main (int argc, char** argv) {
     if (argc>3) {
         getCoord(argv[2], &lonD, &lonM);
         getCoord(argv[3], &latD, &latM);
-        lon = (lonD % 180) * 60 + lonM * lonD/abs(lonD) + 180 * 60;
-        lat = (latD % 90) * 60 + latM * latD/abs(latD) + 90 * 60;
-        printf("Lon: %d°%d (%d)\nLat: %d°%d (%d)\n", lonD, lonM, lon, latD, latM, lat);
+        lonD = modulo((lonD), 360);
+        latD = modulo(latD, 180) - 180;
+        lon = (lonD - 180) * 60 + lonM * lonD * sign(lonD);
+        lat = (latD + 90) * 60 + latM * latD * sign(latD);
+        printf("Lon: %d°%d' (%d')\nLat: %d°%d' (%d')\n", lonD, lonM, lon, latD, latM, lat);
+        printf("Height: %d m\n", map[lat * NCOLS + lon]);
     }
 
     free(map);
