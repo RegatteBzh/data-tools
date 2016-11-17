@@ -1,5 +1,7 @@
 #include "rgb.h"
 
+#include <stdio.h>
+
 double hue2rgb(double p, double q, double t) {
     if(t < 0) t += 1;
     if(t > 1) t -= 1;
@@ -9,7 +11,7 @@ double hue2rgb(double p, double q, double t) {
     return p;
 }
 
-void hslToRgb(double h, double s, double l, unsigned char* rgb) {
+void hslToRgb(double h, double s, double l, unsigned char* rgbColor) {
     double r, g, b;
 
     if (s == 0) {
@@ -22,7 +24,7 @@ void hslToRgb(double h, double s, double l, unsigned char* rgb) {
         b = hue2rgb(p, q, h - 1/3.0);
     }
 
-    rgb[0] = (unsigned char)(r * 255);
-    rgb[1] = (unsigned char)(g * 255);
-    rgb[2] = (unsigned char)(b * 255);
+    rgbColor[0] = (unsigned char)(r * 255);
+    rgbColor[1] = (unsigned char)(g * 255);
+    rgbColor[2] = (unsigned char)(b * 255);
 }

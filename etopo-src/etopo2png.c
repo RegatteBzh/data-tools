@@ -7,12 +7,22 @@
 
 #include <stdio.h>
 #include <stdint.h>
-#include "etopo-lib.h"
 #include <png.h>
 #include <malloc.h>
+#include <math.h>
+#include "etopo-lib.h"
+#include "rgb.h"
 
 int16_t* map;
 
+int16_t getPoint(int x, int y, float scale) {
+    int step = (int)round((float)1 / scale);
+    return map[y * NCOLS * step + x * step];
+}
+
+int scaleIt(int value, float scale) {
+    return (int)(round((float)value * scale));
+}
 
 int main (int argc, char** argv) {
     FILE* fp;
@@ -28,12 +38,19 @@ int main (int argc, char** argv) {
     png_structp png_ptr = NULL;
 	png_infop info_ptr = NULL;
 	png_bytep row = NULL;
-    int width = NCOLS;
-    int height = NROWS;
     char* title = "ETOPO1";
     int maxLevel = 0;
     int minLevel = 0;
     int i;
+    int x, y;
+    unsigned char rgbColor[3];
+    float scale = 0.2;
+    int width = NCOLS-1;
+    int height = NROWS;
+    int currentHeight;
+
+    width = scaleIt(width, scale);
+    height = scaleIt(height, scale);
 
     printf("%s <filename_i2.bin> <filename.png>\n", argv[0]);
     printf("\te.i. %s ../relief/etopo1_ice_g_i2.bin etopo.png\n", argv[0]);
@@ -101,6 +118,8 @@ int main (int argc, char** argv) {
     // Allocate memory for one row (3 bytes per pixel - RGB)
     row = (png_bytep) malloc(3 * width * sizeof(png_byte));
 
+    printf("Width: %d\nHeight: %d\n", width, height);
+
     // read etopo
     map = readBlock(fpIn);
     for(i=0; i< NCOLS * NROWS; i++) {
@@ -110,27 +129,19 @@ int main (int argc, char** argv) {
     printf("Max: %d\nMin: %d\n", maxLevel, minLevel);
 
     // Write image data
-	int x, y;
 	for (y=0 ; y<height ; y++) {
 		for (x=0 ; x<width ; x++) {
-            unsigned char rgb[3] = {0,0,0};
-            if (map[y * NCOLS + x] < 0) {
-                double h = (double)(map[y * NCOLS + x] - minLevel) / (double)(-minLevel);
-                //hslToRgb(240/360, 1, h / h, rgb);
-                rgb[0] = 0;
-                rgb[1] = 0;
-                rgb[2] = h * (double)255;
+            currentHeight = getPoint(x, y, scale);
+            if (currentHeight < 0) {
+                double h = (double)(currentHeight - minLevel) / (double)(-minLevel);
+                hslToRgb(0.68, 1, 0.5 - h/2, rgbColor);
             } else {
-                double h = (double)(map[y * NCOLS + x] - maxLevel) / (double)(maxLevel);
-                //hslToRgb(120/360, 1, h, rgb);
-                rgb[0] = 0;
-                rgb[1] = h * (double)255;
-                rgb[2] = 0;
+                double h = (double)(currentHeight) / (double)(maxLevel);
+                hslToRgb(0.33, 1, 0.1 - h/10, rgbColor);
             }
-            row[3*x] = rgb[0];
-            row[3*x + sizeof(png_byte)] = rgb[1];
-            row[3*x + 2 * sizeof(png_byte)] = rgb[2];
-            //printf("%d ", )
+            row[3*x] = rgbColor[0];
+            row[3*x + sizeof(png_byte)] = rgbColor[1];
+            row[3*x + 2 * sizeof(png_byte)] = rgbColor[2];
 		}
 		png_write_row(png_ptr, row);
 	}

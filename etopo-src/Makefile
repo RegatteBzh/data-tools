@@ -6,10 +6,10 @@ DEL=rm -rf
 all: $(BIN) $(PNG)
 
 $(BIN): $(BIN).o etopo-lib.o
-	$(CC) -o $@ $^
+	$(CC) -o $@ $^ -lm
 
 $(PNG): $(PNG).o etopo-lib.o rgb.o
-	$(CC) -o $@ $^ -lpng
+	$(CC) -o $@ $^ -lpng -lm
 
 %.o: %.c
 	$(CC) -o $@ -c $<
