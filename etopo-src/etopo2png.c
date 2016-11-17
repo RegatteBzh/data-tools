@@ -134,10 +134,10 @@ int main (int argc, char** argv) {
             currentHeight = getPoint(x, y, scale);
             if (currentHeight < 0) {
                 double h = (double)(currentHeight - minLevel) / (double)(-minLevel);
-                hslToRgb(0.68, 1, 0.5 - h/2, rgbColor);
+                hslToRgb(0.58, 1, h/3, rgbColor);
             } else {
                 double h = (double)(currentHeight) / (double)(maxLevel);
-                hslToRgb(0.33, 1, 0.1 - h/10, rgbColor);
+                hslToRgb(0.33, 1, 0.2 + 4 * h/5, rgbColor);
             }
             row[3*x] = rgbColor[0];
             row[3*x + sizeof(png_byte)] = rgbColor[1];
