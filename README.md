@@ -62,6 +62,21 @@ UGRD représente la composante du vent zonal en m/s
 
 VGRD représente la composante du vent méridien en m/s
 
-# Calcul vitesse
+# Documentation
 
-http://www.csgnetwork.com/degreelenllavcalc.html
+## Calcul vitesse
+
+* http://www.csgnetwork.com/degreelenllavcalc.html
+
+# Projection
+
+* https://github.com/StefanSchroeder/Golang-Ellipsoid
+* https://earth.nullschool.net/about.html
+* https://cesiumjs.org/
+
+# Carto
+
+* http://slides.com/keendev/gis-server-with-go#/ (https://vimeo.com/145083456)
+* https://github.com/golang/go/wiki/Projects#gis
+* http://geoserver.org/
+* http://mapserver.org/
