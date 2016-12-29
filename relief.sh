@@ -6,6 +6,7 @@
 FOLDER=tmp
 DEST=relief
 COAST_SERVER=http://naciscdn.org/naturalearth
+GSHHG_SERVER=https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhg
 
 rm -rf $FOLDER
 mkdir -p $FOLDER
@@ -32,7 +33,11 @@ done
 echo "==== ETOPO1 ===="
 curl "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/ice_surface/grid_registered/binary/readme_etopo1_binary.txt" -o "${DEST}/readme_etopo1_binary.txt"
 curl "https://www.ngdc.noaa.gov/mgg/global/relief/ETOPO1/data/ice_surface/grid_registered/binary/etopo1_ice_g_i2.zip" -o "${FOLDER}/etopo1_ice_g_i2.zip"
-unzip -o -d "${DEST}" "${FOLDER}/etopo1_ice_g_i2.zip"
+unzip -o -d "${DEST}" "${FOLDER}/etopo1_ice_g_i2.zip" 
+
+echo "==== GSHHG ===="
+curl "${GSHHG_SERVER}/oldversions/version2.3.4/gshhg-bin-2.3.4.zip" -o "${FOLDER}/gshhg-bin.zip"
+unzip -o -d "${DEST}" "${FOLDER}/gshhg-bin.zip" 
 
 #echo "==== Converting to JSON ===="
 #ogr2ogr -f GeoJSON $FOLDER/coastline_50m.json $FOLDER/ne_50m_coastline.shp

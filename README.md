@@ -4,6 +4,10 @@
 
 Récupération des données côtières et les lacs
 
+## Côtes
+https://www.ngdc.noaa.gov/mgg/shorelines/gshhs.html
+https://www.ngdc.noaa.gov/mgg/shorelines/data/gshhg/latest/
+
 ## polaire.sh
 
 Récupération des polaires pour imoca 60
