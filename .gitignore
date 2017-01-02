@@ -3,6 +3,7 @@ weather
 tmp
 relief
 polaire_*
+polaires
 wgrib
 wgrib2
 bin2json-src/bin2json
